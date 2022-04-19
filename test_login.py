@@ -1,5 +1,6 @@
 import time
 import unittest
+from utils import Utils
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -27,9 +28,9 @@ class QureAISignInTest(unittest.TestCase):
         email.send_keys('ravi.pal@gmail.com')
         password.send_keys('password@123')
 
-        self.assertTrue(self.is_element_present(By.XPATH, ".//button[@type='submit']"))
+        self.assertTrue(Utils.is_element_present(self ,By.XPATH, ".//button[@type='submit']"))
 
-        self.assertTrue(self.click_element(signin_btn))
+        self.assertTrue(Utils.click_element(self, signin_btn))
         time.sleep(3)
 
 
@@ -52,9 +53,9 @@ class QureAISignInTest(unittest.TestCase):
         email.send_keys('ravi.pal20@gmail.com')
         password.send_keys('password@123')
 
-        self.assertTrue(self.is_element_present(By.XPATH, ".//button[@type='submit']"))
+        self.assertTrue(Utils.is_element_present(self ,By.XPATH, ".//button[@type='submit']"))
 
-        self.assertTrue(self.click_element(signin_btn))
+        self.assertTrue(Utils.click_element(self, signin_btn))
         time.sleep(3)
 
 
@@ -77,9 +78,9 @@ class QureAISignInTest(unittest.TestCase):
         email.send_keys('ravi.pal20@gmail.com')
         password.send_keys('password@123')
 
-        self.assertTrue(self.is_element_present(By.XPATH, ".//button[@type='submit']"))
+        self.assertTrue(Utils.is_element_present(self ,By.XPATH, ".//button[@type='submit']"))
 
-        self.assertTrue(self.click_element(signin_btn))
+        self.assertTrue(Utils.click_element(self, signin_btn))
         time.sleep(3)
 
 
@@ -94,33 +95,18 @@ class QureAISignInTest(unittest.TestCase):
         time.sleep(3)
 
         logout_btn = self.driver.find_element_by_xpath(".//button[contains(text(),'Or click here to logout.')]")
-        self.assertTrue(self.scroll_to_element(logout_btn), "Element not present")
+        self.assertTrue(Utils.scroll_to_element(self, logout_btn), "Element not present")
         logout_btn.click()
 
         time.sleep(3)
 
-        self.assertTrue(self.is_element_present(By.XPATH, ".//a[contains(text(),'Sign in')]"))
+        self.assertTrue(Utils.is_element_present(self ,By.XPATH, ".//a[contains(text(),'Sign in')]"))
 
         time.sleep(3)
 
 
     def tearDown(self):
         self.driver.close()
-
-    def is_element_present(self, how, what):
-        try: self.driver.find_element(by=how, value=what)
-        except NoSuchElementException as e: return False
-        return True
-
-    def click_element(self, webelement):
-        try: webelement.click()
-        except NoSuchElementException as e: return False
-        return True
-
-    def scroll_to_element(self, webelement):
-        try: self.driver.execute_script("arguments[0].scrollIntoView();", webelement)
-        except NoSuchElementException as e: return False
-        return True
 
 if __name__ == "__main__":
     unittest.main()

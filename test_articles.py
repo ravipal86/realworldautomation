@@ -14,7 +14,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
 
-    def _create_new_article(self):
+    def test_create_new_article(self):
 
         signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
         signin_lnk.click()
@@ -27,9 +27,9 @@ class QureAIArticleTest(unittest.TestCase):
         email.send_keys('ravi.pal20@gmail.com')
         password.send_keys('password@123')
 
-        self.assertTrue(self.is_element_present(By.XPATH, ".//button[@type='submit']"))
+        self.assertTrue(Utils.is_element_present(self, By.XPATH, ".//button[@type='submit']"))
 
-        self.assertTrue(self.click_element(signin_btn))
+        self.assertTrue(Utils.click_element(self, signin_btn))
         time.sleep(3)
 
 
@@ -61,7 +61,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
 
-    def _create_new_article_with_same_name(self):
+    def test_create_new_article_with_same_name(self):
 
         signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
         signin_lnk.click()
@@ -74,9 +74,9 @@ class QureAIArticleTest(unittest.TestCase):
         email.send_keys('ravi.pal20@gmail.com')
         password.send_keys('password@123')
 
-        self.assertTrue(self.is_element_present(By.XPATH, ".//button[@type='submit']"))
+        self.assertTrue(Utils.is_element_present(self, By.XPATH, ".//button[@type='submit']"))
 
-        self.assertTrue(self.click_element(signin_btn))
+        self.assertTrue(Utils.click_element(self, signin_btn))
         time.sleep(3)
 
 
@@ -108,14 +108,13 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
         article_title_error = self.driver.find_element_by_xpath(".//li[@ng-repeat='error in errors']")
-        self.assertTrue(self.is_element_present(By.XPATH, ".//li[@ng-repeat='error in errors']"))
+        self.assertTrue(Utils.is_element_present(self, By.XPATH, ".//li[@ng-repeat='error in errors']"))
 
         self.assertEqual("title must be unique", article_title_error.text, "article title is not unique")
         time.sleep(3)
 
-
 	
-    def _comment_on_article(self):
+    def test_comment_on_article(self):
 
         comment_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
@@ -130,9 +129,9 @@ class QureAIArticleTest(unittest.TestCase):
         email.send_keys('ravi.pal20@gmail.com')
         password.send_keys('password@123')
 
-        self.assertTrue(self.is_element_present(By.XPATH, ".//button[@type='submit']"))
+        self.assertTrue(Utils.is_element_present(self, By.XPATH, ".//button[@type='submit']"))
 
-        self.assertTrue(self.click_element(signin_btn))
+        self.assertTrue(Utils.click_element(self, signin_btn))
         time.sleep(3)
 
 
@@ -164,7 +163,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(5)
 
         comment_submit = self.driver.find_element_by_xpath(".//button[@type='submit']")
-        self.assertTrue(self.scroll_to_element(comment_submit), "Element not present")
+        self.assertTrue(Utils.scroll_to_element(self, comment_submit), "Element not present")
 
         comment_txtbox = self.driver.find_element_by_xpath(".//textarea[@ng-model='$ctrl.commentForm.body']")
         comment_txtbox.send_keys(comment_text)
@@ -177,6 +176,7 @@ class QureAIArticleTest(unittest.TestCase):
         self.assertEqual(comment_text, posted_comment.text, "comment not matching after post")
 
         time.sleep(3)
+
 
     def test_tags_on_article(self):
 
@@ -217,29 +217,51 @@ class QureAIArticleTest(unittest.TestCase):
         self.assertTrue(Utils.search_tag(self, article_tags, last_feed_list.text), "tag not on the article")
 
 
+    def test_fav_count_on_article(self):
+
+        signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
+        self.assertTrue(Utils.click_element(self, signin_lnk))
+        time.sleep(3)
+
+        email = self.driver.find_element_by_xpath(".//input[@type='email']")
+        password = self.driver.find_element_by_xpath(".//input[@type='password']")
+        signin_btn = self.driver.find_element_by_xpath(".//button[@type='submit']")
+
+        email.send_keys('ravi.pal20@gmail.com')
+        password.send_keys('password@123')
+
+        self.assertTrue(Utils.is_element_present(self, By.XPATH, ".//button[@type='submit']"))
+
+        self.assertTrue(Utils.click_element(self, signin_btn))
+        time.sleep(3)
+
+
+        profile_name = self.driver.find_element_by_xpath(".//a[contains(@ui-sref,'app.profile.main')]").text
+        self.assertEqual("ravipal20", profile_name, "profile username is not matching")
+
+        time.sleep(3)
+
+        global_feeds = self.driver.find_element_by_xpath(".//a[contains(text(),'Global Feed')]")
+        global_feeds.click()
+
+        time.sleep(3)
+
+        first_article_on_feed = self.driver.find_elements_by_xpath(".//article-preview")[1]
+        fav_count_before = first_article_on_feed.find_element_by_xpath(".//ng-transclude//ng-transclude/span").text
+
+        fav_icon_btn = first_article_on_feed.find_element_by_xpath(".//ng-transclude//button")
+        fav_icon_btn.click()
+
+        time.sleep(3)
+
+        fav_count_after = first_article_on_feed.find_element_by_xpath(".//ng-transclude//ng-transclude/span").text
+
+        self.assertEqual(int(fav_count_before) + 1, int(fav_count_after), "fav article count did not increased")
+
+
     def tearDown(self):
         self.driver.close()
 
-    # def is_element_present(self, how, what):
-    #     try: self.driver.find_element(by=how, value=what)
-    #     except NoSuchElementException as e: return False
-    #     return True
-
-    # def click_element(self, webelement):
-    #     try: webelement.click()
-    #     except NoSuchElementException as e: return False
-    #     return True
-
-    # def scroll_to_element(self, webelement):
-    #     try: self.driver.execute_script("arguments[0].scrollIntoView();", webelement)
-    #     except NoSuchElementException as e: return False
-    #     return True
-
-    # def search_tag(self, list, tag):
-    #     for i in range(len(list)):
-    #         if list[i].text == tag:
-    #             return True
-    #         return False
 
 if __name__ == "__main__":
     unittest.main()
