@@ -13,7 +13,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
 
-    def test_create_new_article(self):
+    def create_new_article(self):
 
         signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
         signin_lnk.click()
@@ -60,7 +60,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
 
-    def test_create_new_article_with_same_name(self):
+    def create_new_article_with_same_name(self):
 
         signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
         signin_lnk.click()
@@ -116,6 +116,8 @@ class QureAIArticleTest(unittest.TestCase):
 	
     def test_comment_on_article(self):
 
+        comment_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
         signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
         signin_lnk.click()
         time.sleep(3)
@@ -144,7 +146,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
         article_title = self.driver.find_element_by_xpath(".//input[@ng-model='$ctrl.article.title']")
-        article_title.send_keys("Hello World 20")
+        article_title.send_keys("Hello World 21")
 
         article_desc = self.driver.find_element_by_xpath(".//input[@ng-model='$ctrl.article.description']")
         article_desc.send_keys("Hello World 11 description")
@@ -164,9 +166,43 @@ class QureAIArticleTest(unittest.TestCase):
         self.assertTrue(self.scroll_to_element(comment_submit), "Element not present")
 
         comment_txtbox = self.driver.find_element_by_xpath(".//textarea[@ng-model='$ctrl.commentForm.body']")
-        comment_txtbox.send_keys("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+        comment_txtbox.send_keys(comment_text)
 
         comment_submit.click()
+
+        time.sleep(3)
+
+        posted_comment = self.driver.find_element_by_xpath(".//comment/div/div[@class='card-block']/p")
+        self.assertEqual(comment_text, posted_comment.text, "comment not matching after post")
+
+        time.sleep(3)
+
+    def test_tags_on_article(self):
+
+        signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
+        signin_lnk.click()
+        time.sleep(3)
+
+        email = self.driver.find_element_by_xpath(".//input[@type='email']")
+        password = self.driver.find_element_by_xpath(".//input[@type='password']")
+        signin_btn = self.driver.find_element_by_xpath(".//button[@type='submit']")
+
+        email.send_keys('ravi.pal20@gmail.com')
+        password.send_keys('password@123')
+
+        self.assertTrue(self.is_element_present(By.XPATH, ".//button[@type='submit']"))
+
+        self.assertTrue(self.click_element(signin_btn))
+        time.sleep(3)
+
+
+        profile_name = self.driver.find_element_by_xpath(".//a[contains(@ui-sref,'app.profile.main')]").text
+        self.assertEqual("ravipal20", profile_name, "profile username is not matching")
+
+        time.sleep(3)
+
+        # global_feed = self.driver.find_element_by_xpath(".//a[contains(text(),'Global Feed')]")
+        # global_feed.click()
 
         time.sleep(3)
 
