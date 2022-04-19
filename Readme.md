@@ -6,12 +6,11 @@ PLease flow the steps to setup this project
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install requirement list. In the downloaded folder you can see requirement.txt file.
 
-First create virtualenv
+First create virtualenv named realworld
 
 ```bash
 
-cd code_folder
-
+cd realworldautomation
 python3 -m realworld
 
 ```
@@ -20,7 +19,6 @@ Now go the script directory in newly created folder realworld and activate the v
 ```bash
 
 cd realworld/Scripts
-
 activate
 
 ```
@@ -32,3 +30,4 @@ Here all dependencies can be installed via requirements.txt file
 pip install -r requirements.txt
 
 ```
+

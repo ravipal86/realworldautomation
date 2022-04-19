@@ -13,7 +13,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
 
-    def create_new_article(self):
+    def test_create_new_article(self):
 
         signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
         signin_lnk.click()
@@ -60,7 +60,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
 
-    def create_new_article_with_same_name(self):
+    def test_create_new_article_with_same_name(self):
 
         signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
         signin_lnk.click()
@@ -146,7 +146,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
         article_title = self.driver.find_element_by_xpath(".//input[@ng-model='$ctrl.article.title']")
-        article_title.send_keys("Hello World 21")
+        article_title.send_keys("Hello World 23")
 
         article_desc = self.driver.find_element_by_xpath(".//input[@ng-model='$ctrl.article.description']")
         article_desc.send_keys("Hello World 11 description")
@@ -160,7 +160,7 @@ class QureAIArticleTest(unittest.TestCase):
         article_submit = self.driver.find_element_by_xpath(".//button[@type='button']")
         article_submit.click()
 
-        time.sleep(3)
+        time.sleep(5)
 
         comment_submit = self.driver.find_element_by_xpath(".//button[@type='submit']")
         self.assertTrue(self.scroll_to_element(comment_submit), "Element not present")
@@ -201,10 +201,19 @@ class QureAIArticleTest(unittest.TestCase):
 
         time.sleep(3)
 
-        # global_feed = self.driver.find_element_by_xpath(".//a[contains(text(),'Global Feed')]")
-        # global_feed.click()
+        self.assertTrue(self.is_element_present(By.XPATH, ".//div[@class='sidebar']"))
+
+        first_tag = self.driver.find_elements_by_xpath(".//div[@class='sidebar']/div[@class='tag-list']/a")[0]
+        first_tag.click()
 
         time.sleep(3)
+
+        last_feed_list = self.driver.find_elements_by_xpath(".//div[@class='feed-toggle']/ul/li/a")[-1]
+
+        self.assertEqual(first_tag.text, last_feed_list.text, "tag listing is matching")
+
+        article_tags = self.driver.find_elements_by_xpath(".//div[@class='article-preview']/a/ul/li")
+        self.assertTrue(self.search_tag(article_tags, last_feed_list.text), "tag not on the article")
 
 
     def tearDown(self):
@@ -224,6 +233,12 @@ class QureAIArticleTest(unittest.TestCase):
         try: self.driver.execute_script("arguments[0].scrollIntoView();", webelement)
         except NoSuchElementException as e: return False
         return True
+
+    def search_tag(self, list, tag):
+        for i in range(len(list)):
+            if list[i].text == tag:
+                return True
+            return False
 
 if __name__ == "__main__":
     unittest.main()
