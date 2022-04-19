@@ -13,7 +13,7 @@ class QureAIArticleTest(unittest.TestCase):
         time.sleep(3)
 
 
-    def create_new_article(self):
+    def test_create_new_article(self):
 
         signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
         signin_lnk.click()
@@ -114,7 +114,7 @@ class QureAIArticleTest(unittest.TestCase):
 
 
 	
-    def _comment_on_article(self):
+    def test_comment_on_article(self):
 
         signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
         signin_lnk.click()
