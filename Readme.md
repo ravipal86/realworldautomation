@@ -88,3 +88,7 @@ Article Test cases are covered in **test_article.py** file
 | test_comment_on_article | test to check if user can comment on the article |
 | test_tags_on_article | test to check if clicking on tag gives article with same tags |
 | test_fav_count_on_article | test for checking user can click fav button and check the count change |
+| test_follow_author_of_article | test for checking user can follow another author |
+| test_edit_article | test for checking user can follow another author |
+
+

@@ -259,6 +259,111 @@ class QureAIArticleTest(unittest.TestCase):
         self.assertEqual(int(fav_count_before) + 1, int(fav_count_after), "fav article count did not increased")
 
 
+    def test_follow_author_of_article(self):
+
+        signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
+        self.assertTrue(Utils.click_element(self, signin_lnk))
+        time.sleep(3)
+
+        email = self.driver.find_element_by_xpath(".//input[@type='email']")
+        password = self.driver.find_element_by_xpath(".//input[@type='password']")
+        signin_btn = self.driver.find_element_by_xpath(".//button[@type='submit']")
+
+        email.send_keys('ravi.pal12@gmail.com')
+        password.send_keys('password@123')
+
+        self.assertTrue(Utils.is_element_present(self, By.XPATH, ".//button[@type='submit']"))
+
+        self.assertTrue(Utils.click_element(self, signin_btn))
+        time.sleep(3)
+
+
+        profile_name = self.driver.find_element_by_xpath(".//a[contains(@ui-sref,'app.profile.main')]").text
+        self.assertEqual("ravipal12", profile_name, "profile username is not matching")
+
+        time.sleep(3)
+
+        global_feeds = self.driver.find_element_by_xpath(".//a[contains(text(),'Global Feed')]")
+        global_feeds.click()
+
+        time.sleep(3)
+
+        global_feeds = self.driver.find_element_by_xpath(".//a[contains(text(),'Global Feed')]")
+        global_feeds.click()
+
+        time.sleep(3)
+
+        last_article_on_feed = self.driver.find_elements_by_xpath(".//article-preview")[-1]
+        self.assertTrue(Utils.scroll_to_element(self, last_article_on_feed), "Element not present")
+
+        author_name = last_article_on_feed.find_element_by_xpath("//div[@class='info']/a[contains(@class,'author')]")
+        author_name.click()
+
+        time.sleep(3)
+
+        follow_btn = self.driver.find_element_by_xpath(".//follow-btn/button")
+        follow_btn.click()
+
+        time.sleep(3)
+
+    def test_edit_article(self):
+
+        new_article_body_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eius."
+
+        signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
+        self.assertTrue(Utils.click_element(self, signin_lnk))
+        time.sleep(3)
+
+        email = self.driver.find_element_by_xpath(".//input[@type='email']")
+        password = self.driver.find_element_by_xpath(".//input[@type='password']")
+        signin_btn = self.driver.find_element_by_xpath(".//button[@type='submit']")
+
+        email.send_keys('ravi.pal19@gmail.com')
+        password.send_keys('password@123')
+
+        self.assertTrue(Utils.is_element_present(self, By.XPATH, ".//button[@type='submit']"))
+
+        self.assertTrue(Utils.click_element(self, signin_btn))
+        time.sleep(5)
+
+
+        profile_name = self.driver.find_element_by_xpath(".//a[contains(@ui-sref,'app.profile.main')]")
+        self.assertEqual("ravipal19", profile_name.text, "profile username is not matching")
+
+        time.sleep(3)
+
+        profile_name.click()
+
+        time.sleep(3)
+
+        first_article_on_feed = self.driver.find_element_by_xpath(".//article-preview")
+        read_more = first_article_on_feed.find_element_by_xpath(".//span[contains(text(),'Read more')]")
+        read_more.click()
+
+        time.sleep(3)
+
+        article_prev_text = self.driver.find_element_by_xpath(".//div[@ng-bind-html='::$ctrl.article.body']").text
+
+        edit_article_btn = self.driver.find_elements_by_xpath(".//article-actions//ng-transclude/span/a[@ui-sref='app.editor({ slug: $ctrl.article.slug })']")[0]
+        edit_article_btn.click()
+
+        time.sleep(3)
+
+        article_body = self.driver.find_element_by_xpath(".//textarea[@ng-model='$ctrl.article.body']")
+        article_body.send_keys(new_article_body_text)
+
+        article_submit = self.driver.find_element_by_xpath(".//button[@type='button']")
+        article_submit.click()
+
+        time.sleep(3)
+
+        article_update_text = self.driver.find_element_by_xpath(".//div[@ng-bind-html='::$ctrl.article.body']").text
+
+        self.assertTrue(article_update_text, new_article_body_text)
+
+        time.sleep(3)
+
+
     def tearDown(self):
         self.driver.close()
 
