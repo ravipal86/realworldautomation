@@ -14,31 +14,6 @@ class QureAISignInTest(unittest.TestCase):
         self.driver.get("http://demo.realworld.io/")
         time.sleep(3)
 
-
-    def test_signin_fail(self):
-
-        signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
-        signin_lnk.click()
-        time.sleep(3)
-
-        email = self.driver.find_element_by_xpath(".//input[@type='email']")
-        password = self.driver.find_element_by_xpath(".//input[@type='password']")
-        signin_btn = self.driver.find_element_by_xpath(".//button[@type='submit']")
-
-        email.send_keys('ravi.pal@gmail.com')
-        password.send_keys('password@123')
-
-        self.assertTrue(Utils.is_element_present(self ,By.XPATH, ".//button[@type='submit']"))
-
-        self.assertTrue(Utils.click_element(self, signin_btn))
-        time.sleep(3)
-
-
-        profile_name = self.driver.find_element_by_xpath(".//a[contains(@ui-sref,'app.profile.main')]").text
-        self.assertNotEqual("ravipal17", profile_name, "profile username is not matching")
-
-        time.sleep(3)
-
 	
     def test_signin_pass(self):
 
@@ -101,6 +76,31 @@ class QureAISignInTest(unittest.TestCase):
         time.sleep(3)
 
         self.assertTrue(Utils.is_element_present(self ,By.XPATH, ".//a[contains(text(),'Sign in')]"))
+
+        time.sleep(3)
+
+
+    def test_signin_fail(self):
+
+        signin_lnk = self.driver.find_element_by_xpath(".//a[contains(text(),'Sign in')]")
+        signin_lnk.click()
+        time.sleep(3)
+
+        email = self.driver.find_element_by_xpath(".//input[@type='email']")
+        password = self.driver.find_element_by_xpath(".//input[@type='password']")
+        signin_btn = self.driver.find_element_by_xpath(".//button[@type='submit']")
+
+        email.send_keys('ravi.pal@gmail.com')
+        password.send_keys('password@123')
+
+        self.assertTrue(Utils.is_element_present(self ,By.XPATH, ".//button[@type='submit']"))
+
+        self.assertTrue(Utils.click_element(self, signin_btn))
+        time.sleep(3)
+
+
+        profile_name = self.driver.find_element_by_xpath(".//a[contains(@ui-sref,'app.profile.main')]").text
+        self.assertNotEqual("ravipal17", profile_name, "profile username is not matching")
 
         time.sleep(3)
 
