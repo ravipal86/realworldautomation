@@ -60,7 +60,7 @@ pytest test_articles.py::QureAIArticleTest::test_create_new_article_with_same_na
 
 ## Test Cases
 
-Login Test cases are covered in ==test_login.py== file
+Login Test cases are covered in **test_login.py** file
 
 | Test Name | Description |
 | ----------- | ----------- |
@@ -68,7 +68,18 @@ Login Test cases are covered in ==test_login.py== file
 | test_signout_pass | test to check user can logout after successfull login |
 | test_signin_fail | test to check user login with wrong credentials |
 
-Article Test cases are covered in ==test_article.py== file
+
+
+SignUp Test cases are covered in **test_signup.py** file
+
+| Test Name | Description |
+| ----------- | ----------- |
+| test_signup_pass | test to check if user can register with fresh username and email |
+| test_signup_fail | test to check if user uses already taken username then it should not get registered |
+
+
+
+Article Test cases are covered in **test_article.py** file
 
 | Test Name | Description |
 | ----------- | ----------- |
@@ -77,10 +88,3 @@ Article Test cases are covered in ==test_article.py== file
 | test_comment_on_article | test to check if user can comment on the article |
 | test_tags_on_article | test to check if clicking on tag gives article with same tags |
 | test_fav_count_on_article | test for checking user can click fav button and check the count change |
-
-SignUp Test cases are covered in ==test_signup.py== file
-
-| Test Name | Description |
-| ----------- | ----------- |
-| test_signup_pass | test to check if user can register with fresh username and email |
-| test_signup_fail | test to check if user uses already taken username then it should not get registered |
